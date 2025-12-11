@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8000";
+const API_URL = "https://romantic-creation-production-4130.up.railway.app";
 
 // 1. Fungsi meminta prediksi ke AI
 export const getPrediction = async (sensorData) => {

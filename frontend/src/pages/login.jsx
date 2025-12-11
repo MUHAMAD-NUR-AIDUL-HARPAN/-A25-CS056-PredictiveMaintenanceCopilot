@@ -10,6 +10,9 @@ function Login() {
 
   const { login } = useAuth();
 
+  // 🟢 URL BACKEND RAILWAY (Ganti localhost dengan ini)
+  const API_URL = "https://romantic-creation-production-4130.up.railway.app";
+
   // 2. FUNGSI HANDLE LOGIN KE BACKEND
   const handleLogin = async (e) => {
     e.preventDefault(); // Mencegah reload halaman
@@ -17,8 +20,8 @@ function Login() {
     setIsLoading(true);
 
     try {
-      // Tembak API Backend
-      const response = await fetch("http://localhost:8000/login", {
+      // 🟢 Tembak API Backend Railway
+      const response = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -44,7 +47,7 @@ function Login() {
         setError(result.detail || "Wrong Username or Password!");
       }
     } catch (err) {
-      setError("Gagal terhubung ke server Backend.");
+      setError("Gagal terhubung ke server Backend (Periksa Koneksi Internet).");
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -91,7 +94,7 @@ function Login() {
             />
           </div>
 
-          {/* Tombol Login (Diganti jadi button submit HTML biasa agar logic jalan) */}
+          {/* Tombol Login */}
           <button
             type="submit"
             disabled={isLoading}
@@ -104,25 +107,5 @@ function Login() {
     </div>
   );
 }
-
-// function InputField({ label, type = "text", placeholder, value, onChange }) {
-//   return (
-//     <div>
-//       <label className="font-semibold font-inter text-[18px]">{label}</label>
-
-//       <div className="relative rounded-xl p-[1px] bg-[#D9D9D9] group transition-all duration-300 ease-in-out w-full mt-2">
-//         <div className="absolute w-full inset-0 rounded-xl opacity-0 group-hover:opacity-100 bg-gradient-to-r from-[#0BA6DF] via-[#7A7A73] to-[#0BA6DF] animate-gradient transition-opacity duration-500"></div>
-
-//         <input
-//           type={type}
-//           placeholder={placeholder}
-//           value={value} // <-- MENERIMA VALUE DARI STATE
-//           onChange={onChange} // <-- MENGIRIM PERUBAHAN KE STATE
-//           className="relative z-10 p-3 w-full rounded-xl font-inter outline-none bg-white border border-transparent focus:border-blue-400 transition-colors"
-//         />
-//       </div>
-//     </div>
-//   );
-// }
 
 export default Login;
