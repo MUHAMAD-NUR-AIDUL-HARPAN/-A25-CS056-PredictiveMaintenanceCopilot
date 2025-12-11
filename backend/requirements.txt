@@ -3,7 +3,9 @@ uvicorn
 pandas
 numpy
 scikit-learn
+joblib
 groq
+sqlalchemy
 python-multipart
 requests
 python-dotenv
