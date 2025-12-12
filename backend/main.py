@@ -204,14 +204,9 @@ def predict_failure(data: SensorInput, db: Session = Depends(get_db)):
         "recommendation": rec
     }
 
-# @app.get("/history")
-# def get_history(db: Session = Depends(get_db)):
-#     return db.query(SensorLog).order_by(SensorLog.id.desc()).limit(10).all()
-
-@app.get("/data/all") # <--- UBAH NAMA ENDPOINT
-def get_all_data(db: Session = Depends(get_db)):
-    # Hapus .limit(10) agar semua data ditampilkan
-    return db.query(SensorLog).order_by(SensorLog.id.desc()).all()
+@app.get("/history")
+def get_history(db: Session = Depends(get_db)):
+    return db.query(SensorLog).order_by(SensorLog.id.desc()).limit(10).all()
 
 # ==========================================
 # 6. API CHATBOT

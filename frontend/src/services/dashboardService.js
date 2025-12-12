@@ -37,17 +37,3 @@ export const getChatResponse = async (message) => {
     return "Maaf, server sedang tidak dapat dihubungi.";
   }
 };
-
-export const getAllData = async () => {
-  try {
-    // PERUBAHAN DI SINI: /history diganti /data/all
-    const response = await fetch(`${API_URL}/data/all`);
-
-    if (!response.ok) throw new Error("Gagal mengambil seluruh data");
-
-    return await response.json();
-  } catch (error) {
-    console.error("Data All Error:", error);
-    return [];
-  }
-};
