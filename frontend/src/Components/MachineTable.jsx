@@ -19,9 +19,6 @@ const MachineTable = ({ data, onSelect, selectedId }) => {
     }
   };
 
-  // 3. HELPER UNTUK MENERJEMAHKAN STATUS
-  // Karena data status di database/dashboard pakai bahasa Indonesia (Normal, Waspada, Bahaya),
-  // Kita perlu mapping manual ke kunci kamus agar bisa berubah bahasa.
   const getTranslatedStatus = (status) => {
     if (status === "Normal") return t("normal");
     if (status === "Waspada") return t("alert");
@@ -39,12 +36,11 @@ const MachineTable = ({ data, onSelect, selectedId }) => {
         <table className="min-w-[550px] md:w-full text-left border-collapse">
           <thead>
             <tr className="text-gray-400 dark:text-white text-sm border-b border-gray-100">
-              {/* GANTI JUDUL KOLOM DENGAN TRANSLATE */}
               <th className="py-3 font-medium">{t("col_machine")}</th>
               <th className="py-3 font-medium">{t("col_temp")}</th>
               <th className="py-3 font-medium">{t("col_vib")}</th>
               <th className="py-3 font-medium">{t("col_current")}</th>
-              {/* 'col_pressure' di kamus artinya Waktu/Time (karena isinya jam) */}
+
               <th className="py-3 font-medium">{t("col_pressure")}</th>
               <th className="py-3 font-medium text-right">{t("col_status")}</th>
             </tr>

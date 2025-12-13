@@ -22,7 +22,6 @@ function ChatBot() {
   const [isLoading, setIsLoading] = useState(false);
   const chatEndRef = useRef(null);
 
-  // 2. GUNAKAN TRANSLATE UNTUK SARAN PERTANYAAN
   const suggestions = [
     t("sugg_1"), // "Bagaimana kondisi mesin saat ini?"
     t("sugg_2"), // "Apakah ada risiko kerusakan?"
@@ -132,17 +131,15 @@ function ChatBot() {
 
       <div className="container flex-1 h-[100dvh] py-[10px] px-[10px] lg:pl-0">
         <div className="border border-gray_primary bg-[#F8FAFC] dark:bg-[#292929] h-full rounded-lg flex flex-col justify-between overflow-hidden relative">
-          {/* 3. GUNAKAN TRANSLATE DI HEADER */}
           <Header
             title={t("copilot_header")}
             onMenuClick={() => setIsSidebarOpen(true)}
           />
 
-          <div className="flex-1 overflow-y-auto pb-[20px] px-[20px] lg:px-[107px] space-y-4 pt-[70px] custom-scrollbar">
+          <div className="flex-1 overflow-y-auto pb-[20px] px-[20px] lg:px-[120px] space-y-4 pt-[70px] custom-scrollbar">
             {isChatEmpty ? (
               <div className="h-full flex flex-col items-center justify-center -mt-10 relative ">
                 <h1 className="text-2xl md:text-3xl font-bold text-center mb-2 text-gray-800 dark:text-white">
-                  {/* 4. GUNAKAN TRANSLATE JUDUL HALAMAN KOSONG */}
                   {t("welcome_title")}
                 </h1>
                 <p className="text-lg md:text-xl text-center mb-8 text-gray-600 font-medium dark:text-white">
@@ -179,7 +176,6 @@ function ChatBot() {
                     >
                       {msg.role === "ai" && (
                         <p className="text-xs font-bold text-blue-600 mb-1">
-                          {/* 5. GUNAKAN TRANSLATE NAMA BOT */}
                           {t("bot_label")}
                         </p>
                       )}
@@ -191,7 +187,6 @@ function ChatBot() {
                 {isLoading && (
                   <div className="flex w-full justify-start animate-pulse">
                     <div className="bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded-2xl rounded-tl-none text-xs text-gray-500">
-                      {/* 6. GUNAKAN TRANSLATE INDIKATOR MENGETIK */}
                       {t("typing")}
                     </div>
                   </div>

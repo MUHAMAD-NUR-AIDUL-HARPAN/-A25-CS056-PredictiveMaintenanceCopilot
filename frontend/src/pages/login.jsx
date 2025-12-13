@@ -10,7 +10,6 @@ function Login() {
 
   const { login } = useAuth();
 
-  // 🟢 URL BACKEND RAILWAY (Ganti localhost dengan ini)
   const API_URL = "https://romantic-creation-production-4130.up.railway.app";
 
   // 2. FUNGSI HANDLE LOGIN KE BACKEND

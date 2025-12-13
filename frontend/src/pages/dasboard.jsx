@@ -5,141 +5,179 @@ import AlertCard from "../Components/AlertCard";
 import MachineTable from "../Components/MachineTable";
 import ChartSection from "../Components/ChartSection";
 import Header from "../Components/Header";
-import { getPrediction } from "../services/dashboardService";
+import { getSimulatedData, getAllData } from "../services/dashboardService";
 import { useLanguage } from "../context/LanguageContext";
 
+// NAMA FUNGSI TETAP: Dasboard
 function Dasboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedId, setSelectedId] = useState(1);
-
-  // GUNAKAN HOOK BAHASA
   const { t } = useLanguage();
 
-  // --- STATE DATA ---
   const [machineData, setMachineData] = useState([]);
   const [chartHistory, setChartHistory] = useState([]);
 
-  // State Alert Card
   const [predictionInfo, setPredictionInfo] = useState({
-    status: "Normal",
+    status: "Connecting",
     risk: 0,
-    message: "Menunggu data sensor...",
+    message: "Menghubungkan ke server...",
   });
 
   const [stats, setStats] = useState([
-    { title: t("total_machine"), value: "1 Unit" },
+    { title: t("total_machine"), value: "3 Unit" },
     { title: t("avg_condition"), value: t("waiting") },
     { title: t("efficiency"), value: "100%" },
     { title: t("recommendation"), value: t("safe") },
   ]);
 
-  // --- SIMULASI REALTIME LOOP ---
+  const machineList = [
+    { id: 1, name: "Hydraulic Press A1" },
+    { id: 2, name: "CNC Lathe B2" },
+    { id: 3, name: "Robot Arm C3" },
+  ];
+
+  // =================================================================
+  // 🛑 PERBAIKAN BUG GRAFIK: useEffect ini diubah total
+  // Dipanggil ulang SETIAP kali selectedId berubah.
+  // =================================================================
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        // PENTING: Mengirim ID mesin yang dipilih ke Backend
+        // getAllData di sini akan memanggil endpoint /history/{selectedId}
+        const logs = await getAllData(selectedId);
+
+        if (logs && logs.length > 0) {
+          // Logs dari backend sudah terlimit 20 dan terurut
+          const formattedHistory = logs.map((log) => ({
+            time: new Date(log.timestamp).toLocaleTimeString("id-ID", {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            }),
+            suhu: parseFloat((log.air_temp - 273.15).toFixed(1)),
+            getaran: log.rpm,
+            arus: log.torque,
+          }));
+          setChartHistory(formattedHistory);
+        } else {
+          setChartHistory([]); // Kosongkan jika tidak ada data history
+        }
+      } catch (error) {
+        console.error("Error fetching history for selected machine:", error);
+        setChartHistory([]);
+      }
+    };
+
+    fetchHistory();
+
+    // PENTING: Dependency Array HARUS menyertakan selectedId
+  }, [selectedId]);
+  // =================================================================
+
+  // =================================================================
+  // FETCH REALTIME DATA (Timer 1 Menit)
+  // =================================================================
   useEffect(() => {
     const fetchData = async () => {
-      // 1. GENERATE DATA
-      const rawKelvin = 298 + Math.random() * 20;
-      const displayCelcius = (rawKelvin - 273.15).toFixed(1);
-      const randomRPM = (1400 + Math.random() * 200).toFixed(0);
-      const randomTorque = (40 + Math.random() * 20).toFixed(1);
-
-      const sensorInput = {
-        air_temp: rawKelvin,
-        process_temp: rawKelvin + 10,
-        rpm: parseFloat(randomRPM),
-        torque: parseFloat(randomTorque),
-        tool_wear: 0,
-      };
-
       try {
-        const aiResult = await getPrediction(sensorInput);
+        const requests = machineList.map((m) => getSimulatedData(m.id));
+        const results = await Promise.all(requests);
 
-        // --- PERBAIKAN WAKTU DI SINI ---
-        // Kita ambil waktu sekarang (Jam:Menit:Detik)
         const currentTime = new Date().toLocaleTimeString("id-ID", {
           hour: "2-digit",
           minute: "2-digit",
           second: "2-digit",
         });
 
-        // --- LOGIKA STATUS & REKOMENDASI ---
-        let finalStatus = "Normal";
-        let finalMessage = "";
-        let rekomendasiText = t("safe"); // Default: "Aman"
+        // Mapping Data untuk Tabel
+        const newTableData = results.map((data, index) => {
+          let status = "Normal";
 
-        if (aiResult.status === "Bahaya" || aiResult.risk_percentage > 80) {
-          // KASUS BAHAYA
-          finalStatus = "Bahaya";
-          finalMessage = t("msg_critical");
-          rekomendasiText = t("stop_immediate"); // "STOP SEGERA"
-        } else if (aiResult.risk_percentage > 40) {
-          // KASUS WASPADA
-          finalStatus = "Waspada";
-          finalMessage = t("msg_warning");
-          rekomendasiText = t("check_periodic"); // "Cek Berkala"
-        } else {
-          // KASUS NORMAL
-          finalStatus = "Normal";
-          finalMessage = t("msg_normal");
-          rekomendasiText = t("safe"); // "Aman"
-        }
+          if (
+            data.prediction === 1 ||
+            data.prediction === "Bahaya" ||
+            data.risk_percentage > 80
+          )
+            status = "Bahaya";
+          else if (data.risk_percentage > 40) status = "Waspada";
 
-        // 3. Update Alert Card
-        setPredictionInfo({
-          status: finalStatus,
-          risk: aiResult.risk_percentage,
-          message: finalMessage,
+          return {
+            id: machineList[index].id,
+            name: machineList[index].name,
+            temp: `${(data.air_temp - 273.15).toFixed(1)} °C`,
+            vibration: `${data.rpm.toFixed(0)} rpm`,
+            current: `${data.torque.toFixed(1)} Nm`,
+            pressure: currentTime,
+            status: status,
+            risk: data.risk_percentage,
+          };
         });
 
-        // 4. Update Tabel (DENGAN WAKTU YANG BENAR)
-        const newMachineEntry = {
-          id: 1,
-          name: "Hydraulic Press A1",
-          temp: `${displayCelcius} °C`,
-          vibration: `${randomRPM} rpm`,
-          current: `${randomTorque} Nm`,
-          pressure: currentTime, // <--- SUDAH DIPERBAIKI (Isinya Jam)
-          status: finalStatus,
-        };
-        setMachineData([newMachineEntry]);
+        setMachineData(newTableData);
 
-        // 5. Update Grafik (Pakai waktu yang sama biar sinkron)
+        // Update Logika Tampilan (Grafik & Alert)
+        const selectedRow =
+          newTableData.find((m) => m.id === selectedId) || newTableData[0];
+        const selectedRawData =
+          results.find((_, i) => machineList[i].id === selectedId) ||
+          results[0];
+
+        // Update Chart
         setChartHistory((prev) => {
           const newData = {
-            time: currentTime, // <--- SUDAH DIPERBAIKI
-            suhu: parseFloat(displayCelcius),
-            getaran: sensorInput.rpm,
-            arus: sensorInput.torque,
+            time: currentTime,
+            suhu: parseFloat((selectedRawData.air_temp - 273.15).toFixed(1)),
+            getaran: selectedRawData.rpm,
+            arus: selectedRawData.torque,
           };
-          const newHistory = [...prev, newData];
-          return newHistory.slice(-10);
+          // HANYA TAMBAHKAN TITIK BARU. Tidak perlu .slice(-20) di sini.
+          return [...prev, newData];
         });
 
-        // 6. Update Stats
+        // Update Alert
+        let msg = t("msg_normal");
+        if (selectedRow.status === "Bahaya") msg = t("msg_critical");
+        else if (selectedRow.status === "Waspada") msg = t("msg_warning");
+
+        setPredictionInfo({
+          status: selectedRow.status,
+          risk: selectedRow.risk,
+          message: msg,
+        });
+
+        // Update Stats
+        const avgRisk = (
+          results.reduce((acc, curr) => acc + curr.risk_percentage, 0) / 3
+        ).toFixed(1);
         setStats([
-          { title: t("total_machine"), value: "1 " + t("active") },
-          { title: t("risk_damage"), value: `${aiResult.risk_percentage}%` },
-          { title: t("status_ai"), value: finalStatus },
+          { title: t("total_machine"), value: "3 " + t("active") },
+          { title: t("risk_damage"), value: `${avgRisk}% (Avg)` },
+          { title: t("status_ai"), value: selectedRow.status },
           {
             title: t("recommendation"),
-            value: rekomendasiText,
+            value:
+              selectedRow.status === "Normal" ? t("safe") : t("check_periodic"),
           },
         ]);
       } catch (error) {
-        console.error("Gagal ambil data:", error);
+        console.error("Gagal update dashboard:", error);
       }
     };
 
-    // Refresh tiap 3 detik
-    const interval = setInterval(fetchData, 3000);
+    // Panggil langsung saat halaman dibuka (Mount)
     fetchData();
 
+    // Pasang interval 1 menit
+    const interval = setInterval(fetchData, 60000);
+
     return () => clearInterval(interval);
-  }, [t]);
+  }, [t, selectedId]);
+  // =================================================================
 
   return (
     <div className="flex gap-[10px] h-[100dvh] w-full overflow-hidden bg-[#E9EEF6] dark:bg-black transition-colors duration-300">
       <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-
       <div className="container flex-1 h-full p-[10px] lg:pl-0 flex flex-col">
         <div className="flex-1 border border-gray_primary bg-[#F8FAFC] dark:bg-dark_secondary dark:border-slate-600 rounded-lg overflow-hidden flex flex-col relative transition-colors duration-300">
           <div className="mb-16 pb-0 lg:hidden">
@@ -172,7 +210,9 @@ function Dasboard() {
             <div className="w-full min-h-[350px] shrink-0">
               <ChartSection
                 chartData={chartHistory}
-                selectedMachineName={"Hydraulic Press A1"}
+                selectedMachineName={
+                  machineList.find((m) => m.id === selectedId)?.name
+                }
                 machines={machineData}
                 onSelectMachine={setSelectedId}
                 selectedId={selectedId}

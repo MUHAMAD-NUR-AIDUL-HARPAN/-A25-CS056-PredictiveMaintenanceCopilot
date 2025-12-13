@@ -11,7 +11,7 @@ print("Membaca data...")
 try:
     df = pd.read_csv('data/sensor_data.csv')
 except FileNotFoundError:
-    # Jaga-jaga jika nama filenya masih ai4i2020.csv
+    
     df = pd.read_csv('data/ai4i2020.csv')
 
 # 2. PILIH KOLOM PENTING

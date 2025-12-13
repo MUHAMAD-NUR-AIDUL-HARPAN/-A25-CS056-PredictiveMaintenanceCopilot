@@ -1,13 +1,19 @@
 import React from "react";
-import { AlertTriangle, CheckCircle, Info } from "lucide-react";
-// 1. IMPORT HOOK BAHASA
+// 1. IMPORT ICON TAMBAHAN: WifiOff & Loader2
+import {
+  AlertTriangle,
+  CheckCircle,
+  Info,
+  WifiOff,
+  Loader2,
+} from "lucide-react";
 import { useLanguage } from "../context/LanguageContext";
 
 const AlertCard = ({ status, risk, message }) => {
-  // 2. GUNAKAN HOOK
   const { t } = useLanguage();
 
   // Tentukan Warna & Teks Judul berdasarkan Status
+  // Default: Normal (Hijau)
   let theme = {
     bg: "bg-green-50",
     border: "border-green-200",
@@ -48,6 +54,36 @@ const AlertCard = ({ status, risk, message }) => {
       animate: "",
     };
   }
+  // 👇 TAMBAHAN 1: LOGIKA OFFLINE (Gaya Abu-abu, mengikuti style Anda)
+  else if (status === "Offline") {
+    theme = {
+      bg: "bg-slate-100",
+      border: "border-gray-200",
+      text: "text-gray-700",
+      titleColor: "text-gray-500",
+      barColor: "bg-gray-500",
+      iconBg: "bg-gray-100",
+      iconColor: "text-gray-600",
+      titleText: "SYSTEM OFFLINE",
+      Icon: WifiOff,
+      animate: "",
+    };
+  }
+  // 👇 TAMBAHAN 2: LOGIKA CONNECTING (Gaya Biru, mengikuti style Anda)
+  else if (status === "Connecting") {
+    theme = {
+      bg: "bg-blue-50",
+      border: "border-blue-200",
+      text: "text-blue-700",
+      titleColor: "text-blue-500",
+      barColor: "bg-blue-500",
+      iconBg: "bg-blue-100",
+      iconColor: "text-blue-600",
+      titleText: "CONNECTING...",
+      Icon: Loader2,
+      animate: "animate-spin",
+    };
+  }
 
   return (
     <div
@@ -62,30 +98,32 @@ const AlertCard = ({ status, risk, message }) => {
             {t("system_status_label")}
           </p>
 
-          {/* JUDUL BESAR (Normal/Kritis/Waspada) */}
+          {/* JUDUL BESAR */}
           <h3 className="text-xl md:text-2xl font-bold mb-2">
             {theme.titleText}
           </h3>
 
-          {/* PESAN (Ini sudah diterjemahkan dari Dashboard, jadi biarkan saja) */}
+          {/* PESAN */}
           <p className="text-sm md:text-base leading-relaxed opacity-90">
             {message}
           </p>
 
-          {/* RISK BAR */}
-          <div className="mt-4">
-            <div className="flex justify-between text-xs font-semibold mb-1 opacity-80">
-              {/* LABEL TINGKAT RISIKO */}
-              <span>{t("risk_level_label")}</span>
-              <span>{risk}%</span>
+          {/* 👇 TAMBAHAN 3: Sembunyikan Risk Bar jika Offline/Connecting */}
+          {status !== "Offline" && status !== "Connecting" && (
+            <div className="mt-4">
+              <div className="flex justify-between text-xs font-semibold mb-1 opacity-80">
+                {/* LABEL TINGKAT RISIKO */}
+                <span>{t("risk_level_label")}</span>
+                <span>{risk}%</span>
+              </div>
+              <div className="w-full h-2 bg-white/60 rounded-full overflow-hidden">
+                <div
+                  className={`h-full rounded-full transition-all duration-1000 ${theme.barColor}`}
+                  style={{ width: `${risk}%` }}
+                />
+              </div>
             </div>
-            <div className="w-full h-2 bg-white/60 rounded-full overflow-hidden">
-              <div
-                className={`h-full rounded-full transition-all duration-1000 ${theme.barColor}`}
-                style={{ width: `${risk}%` }}
-              />
-            </div>
-          </div>
+          )}
         </div>
 
         {/* ICON */}

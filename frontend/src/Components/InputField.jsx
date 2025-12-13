@@ -14,7 +14,7 @@ function InputField({ label, type = "text", placeholder, value, onChange }) {
         <input
           type={type}
           placeholder={placeholder}
-          value={value} // <-- MENERIMA VALUE DARI STATE
+          value={value} 
           onChange={onChange}
           className="relative z-10 p-3 w-full  rounded-xl font-inter outline-none bg-white "
         />

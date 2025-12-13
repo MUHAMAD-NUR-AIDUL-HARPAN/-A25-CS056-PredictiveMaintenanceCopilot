@@ -20,7 +20,7 @@ export const translations = {
     waiting: "Menunggu...",
 
     // Status & Alert
-    risk_damage: "Risiko Kerusakan",
+    risk_damage: "Rata-rata Risiko (Semua Mesin)",
     status_ai: "Status AI",
     recommendation: "Rekomendasi",
     normal: "Normal",
@@ -88,7 +88,7 @@ export const translations = {
     waiting: "Waiting...",
 
     // Status & Alert
-    risk_damage: "Failure Risk",
+    risk_damage: "Average Risk (All Machines)",
     status_ai: "AI Status",
     recommendation: "Recommendation",
     normal: "Normal",

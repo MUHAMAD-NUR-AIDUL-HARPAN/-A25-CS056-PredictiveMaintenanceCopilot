@@ -13,7 +13,6 @@ const ChartSection = ({
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // 2. GUNAKAN HOOK
   const { t } = useLanguage();
 
   const handleSelect = (id) => {
@@ -28,7 +27,7 @@ const ChartSection = ({
         {/* KIRI: Judul & Dropdown */}
         <div className="flex items-center gap-4 relative">
           <h2 className="text-sm font-bold text-gray-800 dark:text-white flex items-center gap-2">
-            {/* 3. GANTI JUDUL UTAMA */}
+            {/* 3. UDUL UTAMA */}
             {t("chart_title")}
           </h2>
           <span className="text-gray-300 text-xl font-light">|</span>
@@ -38,7 +37,6 @@ const ChartSection = ({
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className="flex items-center gap-2 bg-gray-50 border dark:bg-dark_primary dark:text-white border-gray-200 px-3 py-1.5 rounded-lg shadow-sm text-xs font-medium text-gray-700 hover:bg-gray-100 transition active:scale-95"
             >
-              {/* 4. GANTI TEXT PLACEHOLDER */}
               {selectedMachineName || t("col_machine")}
               <ChevronDown
                 size={16}
@@ -100,7 +98,7 @@ const ChartSection = ({
           unit=" °C"
         />
         <SensorChart
-          title={`${t("col_vib")} (RPM)`} // "Getaran" / "Vibration"
+          title={`${t("col_vib")}  (RPM)`} // "Getaran" / "Vibration"
           data={chartData}
           dataKeyHistory="getaran"
           dataKeyPrediction="getaranPred"
