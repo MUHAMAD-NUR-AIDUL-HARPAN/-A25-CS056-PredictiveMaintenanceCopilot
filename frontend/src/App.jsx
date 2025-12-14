@@ -4,6 +4,7 @@ import "./App.css";
 import ChatBot from "./pages/chatBot";
 import Login from "./pages/login";
 import Dasboard from "./pages/dasboard";
+import Homepage from "./pages/homepage";
 
 // 1. IMPORT AUTH PROVIDER (Wajib!)
 import { AuthProvider } from "./context/AuthContext";
@@ -13,7 +14,8 @@ function App() {
     // 2. BUNGKUS SEMUA ROUTE DENGAN AUTHPROVIDER
     <AuthProvider>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Homepage />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/chatbot" element={<ChatBot />} />
         <Route path="/dasboard" element={<Dasboard />} />
       </Routes>

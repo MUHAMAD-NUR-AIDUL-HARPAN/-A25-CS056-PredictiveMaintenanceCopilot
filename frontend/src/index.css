@@ -14,6 +14,10 @@
   animation: gradientMove 3s linear infinite;
 }
 
+* {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: black;
   font-family: "Inter", sans-serif;
