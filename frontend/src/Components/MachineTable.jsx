@@ -1,9 +1,9 @@
 import React from "react";
-// 1. IMPORT HOOK BAHASA
+
 import { useLanguage } from "../context/LanguageContext";
 
 const MachineTable = ({ data, onSelect, selectedId }) => {
-  // 2. GUNAKAN HOOK
+
   const { t } = useLanguage();
 
   const getStatusBadgeColor = (status) => {
@@ -29,7 +29,7 @@ const MachineTable = ({ data, onSelect, selectedId }) => {
   return (
     <div className="bg-white dark:bg-dark_secondary rounded-lg shadow-sm border border-slate-400 w-3xl p-6">
       <h3 className="text-lg font-bold text-gray-800 dark:text-white mb-4">
-        {/* Gunakan Judul dari Kamus */}
+       
         {t("live_log")}
       </h3>
       <div className="overflow-x-auto custom-scrollbar">
@@ -73,7 +73,6 @@ const MachineTable = ({ data, onSelect, selectedId }) => {
                       row.status
                     )}`}
                   >
-                    {/* GUNAKAN HELPER TRANSLATE STATUS DI SINI */}
                     {getTranslatedStatus(row.status)}
                   </span>
                 </td>

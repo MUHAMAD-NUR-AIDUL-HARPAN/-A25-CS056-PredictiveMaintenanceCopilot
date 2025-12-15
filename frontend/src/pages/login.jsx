@@ -14,12 +14,12 @@ function Login() {
 
   // 2. FUNGSI HANDLE LOGIN KE BACKEND
   const handleLogin = async (e) => {
-    e.preventDefault(); // Mencegah reload halaman
+    e.preventDefault();
     setError("");
     setIsLoading(true);
 
     try {
-      // 🟢 Tembak API Backend Railway
+      // Tembak API
       const response = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: {
@@ -37,7 +37,6 @@ function Login() {
         // Simpan ke localStorage
         localStorage.setItem("turbiq_user", JSON.stringify(userData));
 
-        // Update state Auth (jika fungsi tersedia)
         if (login) login(userData);
 
         window.location.href = "/dasboard";
@@ -65,7 +64,6 @@ function Login() {
           </p>
         </div>
 
-        {/* Tampilkan Error Jika Ada */}
         {error && (
           <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm text-center border border-red-200">
             {error}

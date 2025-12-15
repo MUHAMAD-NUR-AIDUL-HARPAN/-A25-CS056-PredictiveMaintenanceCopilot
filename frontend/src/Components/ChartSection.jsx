@@ -1,7 +1,7 @@
 import React, { useState, memo } from "react";
 import SensorChart from "./SensorChart";
 import { ChevronDown, Check, Activity } from "lucide-react";
-// 1. IMPORT HOOK BAHASA
+
 import { useLanguage } from "../context/LanguageContext";
 
 const ChartSection = ({
@@ -24,10 +24,8 @@ const ChartSection = ({
     <div className="bg-white p-6 rounded-2xl shadow-sm border dark:bg-dark_secondary border-slate-400 w-full h-full flex flex-col">
       {/* --- HEADER SECTION --- */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 shrink-0">
-        {/* KIRI: Judul & Dropdown */}
         <div className="flex items-center gap-4 relative">
           <h2 className="text-sm font-bold text-gray-800 dark:text-white flex items-center gap-2">
-            {/* 3. UDUL UTAMA */}
             {t("chart_title")}
           </h2>
           <span className="text-gray-300 text-xl font-light">|</span>
@@ -90,7 +88,7 @@ const ChartSection = ({
       {/* --- CHARTS GRID --- */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 flex-1 min-h-0">
         <SensorChart
-          title={t("col_temp")} // "Suhu" / "Temp"
+          title={t("col_temp")}
           data={chartData}
           dataKeyHistory="suhu"
           dataKeyPrediction="suhuPred"
@@ -98,7 +96,7 @@ const ChartSection = ({
           unit=" °C"
         />
         <SensorChart
-          title={`${t("col_vib")}  (RPM)`} // "Getaran" / "Vibration"
+          title={`${t("col_vib")}  (RPM)`}
           data={chartData}
           dataKeyHistory="getaran"
           dataKeyPrediction="getaranPred"
@@ -106,7 +104,7 @@ const ChartSection = ({
           unit=" rpm"
         />
         <SensorChart
-          title={`${t("col_current")} (Torsi)`} // "Arus" / "Current"
+          title={`${t("col_current")} (Torsi)`}
           data={chartData}
           dataKeyHistory="arus"
           dataKeyPrediction="arusPred"

@@ -12,8 +12,7 @@ import { useLanguage } from "../context/LanguageContext";
 const AlertCard = ({ status, risk, message }) => {
   const { t } = useLanguage();
 
-  // Tentukan Warna & Teks Judul berdasarkan Status
-  // Default: Normal (Hijau)
+  
   let theme = {
     bg: "bg-green-50",
     border: "border-green-200",
@@ -22,7 +21,7 @@ const AlertCard = ({ status, risk, message }) => {
     barColor: "bg-green-500",
     iconBg: "bg-green-100",
     iconColor: "text-green-600",
-    titleText: t("status_normal_title"), // "SISTEM NORMAL"
+    titleText: t("status_normal_title"), 
     Icon: CheckCircle,
     animate: "",
   };
@@ -36,7 +35,7 @@ const AlertCard = ({ status, risk, message }) => {
       barColor: "bg-red-500",
       iconBg: "bg-red-100",
       iconColor: "text-red-600",
-      titleText: t("status_critical_title"), // "PERINGATAN KRITIS!"
+      titleText: t("status_critical_title"), 
       Icon: AlertTriangle,
       animate: "animate-pulse",
     };
@@ -49,12 +48,12 @@ const AlertCard = ({ status, risk, message }) => {
       barColor: "bg-yellow-500",
       iconBg: "bg-yellow-100",
       iconColor: "text-yellow-600",
-      titleText: t("status_warning_title"), // "PERLU PERHATIAN"
+      titleText: t("status_warning_title"), 
       Icon: Info,
       animate: "",
     };
   }
-  // 👇 TAMBAHAN 1: LOGIKA OFFLINE (Gaya Abu-abu, mengikuti style Anda)
+  
   else if (status === "Offline") {
     theme = {
       bg: "bg-slate-100",
@@ -69,7 +68,7 @@ const AlertCard = ({ status, risk, message }) => {
       animate: "",
     };
   }
-  // 👇 TAMBAHAN 2: LOGIKA CONNECTING (Gaya Biru, mengikuti style Anda)
+  
   else if (status === "Connecting") {
     theme = {
       bg: "bg-blue-50",
@@ -91,14 +90,14 @@ const AlertCard = ({ status, risk, message }) => {
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1">
-          {/* LABEL KECIL DI ATAS */}
+        
           <p
             className={`text-xs font-bold uppercase tracking-wider mb-1 ${theme.titleColor}`}
           >
             {t("system_status_label")}
           </p>
 
-          {/* JUDUL BESAR */}
+         
           <h3 className="text-xl md:text-2xl font-bold mb-2">
             {theme.titleText}
           </h3>

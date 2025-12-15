@@ -6,12 +6,10 @@ import Login from "./pages/login";
 import Dasboard from "./pages/dasboard";
 import Homepage from "./pages/homepage";
 
-// 1. IMPORT AUTH PROVIDER (Wajib!)
 import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
-    // 2. BUNGKUS SEMUA ROUTE DENGAN AUTHPROVIDER
     <AuthProvider>
       <Routes>
         <Route path="/" element={<Homepage />} />

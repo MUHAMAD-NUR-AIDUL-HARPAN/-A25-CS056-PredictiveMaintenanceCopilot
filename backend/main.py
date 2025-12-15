@@ -11,9 +11,9 @@ from sqlalchemy import create_engine, Column, Integer, Float, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 from datetime import datetime
-import math # Diperlukan untuk normalisasi
+import math 
 
-# Pastikan file simulation.py ada di folder yang sama
+
 from simulation import generate_machine_data
 
 app = FastAPI()

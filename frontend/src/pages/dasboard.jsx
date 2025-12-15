@@ -36,15 +36,13 @@ function Dasboard() {
     { id: 3, name: "Robot Arm C3" },
   ];
 
-  // =================================================================
-  // 🛑 PERBAIKAN BUG GRAFIK: useEffect ini diubah total
+  
   // Dipanggil ulang SETIAP kali selectedId berubah.
-  // =================================================================
+
   useEffect(() => {
     const fetchHistory = async () => {
       try {
         // PENTING: Mengirim ID mesin yang dipilih ke Backend
-        // getAllData di sini akan memanggil endpoint /history/{selectedId}
         const logs = await getAllData(selectedId);
 
         if (logs && logs.length > 0) {
@@ -61,7 +59,7 @@ function Dasboard() {
           }));
           setChartHistory(formattedHistory);
         } else {
-          setChartHistory([]); // Kosongkan jika tidak ada data history
+          setChartHistory([]); 
         }
       } catch (error) {
         console.error("Error fetching history for selected machine:", error);
@@ -71,13 +69,9 @@ function Dasboard() {
 
     fetchHistory();
 
-    // PENTING: Dependency Array HARUS menyertakan selectedId
+    
   }, [selectedId]);
-  // =================================================================
-
-  // =================================================================
-  // FETCH REALTIME DATA (Timer 1 Menit)
-  // =================================================================
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -131,7 +125,7 @@ function Dasboard() {
             getaran: selectedRawData.rpm,
             arus: selectedRawData.torque,
           };
-          // HANYA TAMBAHKAN TITIK BARU. Tidak perlu .slice(-20) di sini.
+          
           return [...prev, newData];
         });
 
@@ -165,7 +159,7 @@ function Dasboard() {
       }
     };
 
-    // Panggil langsung saat halaman dibuka (Mount)
+    
     fetchData();
 
     // Pasang interval 1 menit
