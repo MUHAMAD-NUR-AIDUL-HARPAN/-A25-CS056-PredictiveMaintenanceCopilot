@@ -3,6 +3,7 @@ import Hero3DImage from "../../assets/logo.png";
 import React from "react";
 /* eslint-disable */
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
@@ -39,7 +40,7 @@ const HeroSection = () => {
               teknologi Predictive Maintenance Copilot.
             </p>
 
-            <div>
+            <Link to={"/login"}>
               <button
                 className="group px-8 py-3 bg-white text-black border border-transparent rounded-xl 
                 shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:shadow-[0_0_25px_rgba(255,255,255,0.3)] 
@@ -47,7 +48,7 @@ const HeroSection = () => {
               >
                 Jelajahi lebih lanjut!
               </button>
-            </div>
+            </Link>
           </motion.div>
 
           <div className="flex justify-center lg:justify-end relative mt-10 lg:mt-0">

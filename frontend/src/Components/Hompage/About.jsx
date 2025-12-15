@@ -2,6 +2,7 @@ import React from "react";
 /* eslint-disable */
 import { motion } from "framer-motion";
 import { Cpu, Activity, ShieldCheck, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const AboutUs = () => {
   const features = [
@@ -68,10 +69,12 @@ const AboutUs = () => {
               aset, dan mengoptimalkan biaya operasional secara signifikan.
             </p>
 
-            <button className="group flex items-center gap-2 px-6 py-3 bg-zinc-100 text-zinc-950 rounded-full font-semibold hover:bg-white transition-all">
-              Pelajari Lebih Lanjut
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </button>
+            <Link to={"/login"}>
+              <button className="group flex items-center gap-2 px-6 py-3 bg-zinc-100 text-zinc-950 rounded-full font-semibold hover:bg-white transition-all">
+                Pelajari Lebih Lanjut
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </Link>
           </motion.div>
 
           <motion.div
